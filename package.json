@@ -16,12 +16,12 @@
     "gulp-util": "~2.2.12",
     "gulp": "~3.5.0",
     "gulp-uglify": "~0.1.0",
-    "gulp-csso": "~0.1.8",
     "marked": "~0.3.0",
     "gulp-jade": "~0.4.0",
     "browser-sync": "~0.5.3",
     "gulp-clean": "~0.2.4",
     "gulp-plumber": "~0.5.6",
-    "gulp-sass": "^0.7.1"
+    "gulp-sass": "^0.7.1",
+    "gulp-watch": "^0.6.2"
   }
 }

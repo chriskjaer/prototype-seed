@@ -1,52 +1,58 @@
+'use strict';
+
 var gulp        = require('gulp'),
     clean       = require('gulp-clean'),
     concat      = require('gulp-concat'),
     sass        = require('gulp-sass'),
-    csso        = require('gulp-csso'),
     uglify      = require('gulp-uglify'),
     jade        = require('gulp-jade'),
-    path        = require('path'),
-    browserSync = require('browser-sync'),
-    app         = require('./package.json');
+    watch       = require('gulp-watch'),
+    browserSync = require('browser-sync');
 
 //
 // TASKS
 // -------------------------------------------------------------
 
 gulp.task('css', function() {
-  return gulp.src('src/assets/styles/*.sass')
-    .pipe(sass({
-      errLogToConsole: true
-    }))
-    .pipe(csso()) 
-    .pipe(gulp.dest('build/assets/styles/'));
+  watch({glob: 'src/assets/styles/*.scss'}, function(files) {
+    return files.pipe(sass({
+        errLogToConsole: true
+      }))
+      .pipe(gulp.dest('build/assets/styles/'));
+  });
 });
 
 gulp.task('js', function() {
-  return gulp.src([
-      'src/assets/scripts/*.js'
-    ])
-    .pipe(concat('all.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('build/assets/scripts/'));
+  watch({glob: 'src/assets/scripts/*.js'}, function(files) {
+    return files.pipe(concat('all.js'))
+      .pipe(uglify())
+      .pipe(gulp.dest('build/assets/scripts/'));
+  });
 });
 
 gulp.task('jade', function() {
-  return gulp.src('src/*.jade')
-    .pipe(jade({
-      pretty: true
-    }))
-    .pipe(gulp.dest('build/'));
+  watch({glob: 'src/*.jade'}, function(files) {
+    return files.pipe(jade({
+        pretty: true
+      }))
+      .pipe(gulp.dest('build/'));
+  });
 });
 
 gulp.task('images', function() {
-  return gulp.src('src/assets/images/*.*')
-    .pipe( gulp.dest('build/assets/images/'));
+  watch({glob: 'src/assets/images/*.*'}, function(files) {
+    return files.pipe(
+        gulp.dest('build/assets/images/')
+      );
+  });
 });
 
-gulp.task('fonts', function() {
-  return gulp.src('src/assets/fonts/*.*')
-    .pipe( gulp.dest('build/assets/fonts/'));
+gulp.task('fonts', function() {   
+  watch({glob: 'src/assets/fonts/*.*'}, function(files) {
+    return files.pipe(
+        gulp.dest('build/assets/fonts/')
+      );
+  });
 });
 
 gulp.task('vendor', function() {
@@ -74,7 +80,8 @@ gulp.task('browser-sync', ['build'], function() {
   browserSync.init([
     'build/assets/styles/*.css', 
     'build/assets/scripts/**/*.js',
-    'build/*.html'], {
+    'build/*.html'
+  ], {
     server: {
       baseDir: './build/'
     },
@@ -92,7 +99,7 @@ gulp.task('browser-sync', ['build'], function() {
 
 // --- Let gulp keep an eye on our files and compile stuff if it changes ---
 gulp.task('watch', ['browser-sync'], function () {
-  gulp.watch('src/assets/styles/**/*.sass',['css']);
+  gulp.watch('src/assets/styles/**/*.scss',['css']);
 
   gulp.watch('src/**/*.jade',['jade']);
 
