@@ -18,3 +18,10 @@ gulp
 ```
 
 Gulp will now start a server and open a window with the website. 
+
+### Todo
+- Add KSS Styleguide
+- Add Normalize to css
+- Add boilerplate Sass setup
+- Add grid system
+- Update layout.jade with more bestpractices from HTML5 Boilerplate
