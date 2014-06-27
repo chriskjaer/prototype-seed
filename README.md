@@ -10,14 +10,42 @@ __Prerequisites__
 When those are installed, run the following:
 ```
 npm install
-bower install
+npm install gulp -g
 ```
+`npm install` triggers a bower install after all the npm modules have been
+installed.
+
 After that, start the project by running the gulp command:
 ```
 gulp
 ```
 
 Gulp will now start a server and open a window with the website. 
+
+## Notes:
+
+- Search engines have been disabled by default. Change this in robots.txt
+- Enable basic HTTP-Auth in the server.js file. This is only enabled when
+  serving the site from express. Like when it's hosted on heroku.
+
+# Deploy Prototype to Heroku
+Make sure you have the [Heroku Toolbelt](https://toolbelt.heroku.com/)
+installed.
+
+First, create your app:
+
+```
+  heroku apps:create your-app-name
+```
+If you need to deploy to a european region, append `--region eu`
+When that's done, you can push to heroku afterwards by doing:
+```
+  git push heroku
+```
+
+and it will automaticly deploy the newest code to heroku and build it there.
+
+
 
 ### Todo
 - Add KSS Styleguide
