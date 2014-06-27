@@ -1,12 +1,13 @@
 'use strict';
 
 var gulp        = require('gulp'),
-    clean       = require('gulp-clean'),
     concat      = require('gulp-concat'),
     sass        = require('gulp-sass'),
     uglify      = require('gulp-uglify'),
     jade        = require('gulp-jade'),
     watch       = require('gulp-watch'),
+    del         = require('del'),
+    server      = require('./server'),
     browserSync = require('browser-sync');
 
 //
@@ -65,18 +66,26 @@ gulp.task('vendor', function() {
     .pipe( gulp.dest('build/assets/scripts/'));
 });
 
-gulp.task('clean', function(){
-  return gulp.src('./build/', {read: false})
-    .pipe(clean({force: true}));
+gulp.task('clean', function(cb){
+  return del(['./build'], cb);
 });
 
+gulp.task('public', function() {
+  watch({glob: 'src/public/**/*.*'}, function(files) {
+    return files.pipe(
+      gulp.dest('build/')
+     );
+  });
+});
 
 // --- Bringing it all together in a build task ---
-gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor']);
+gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor', 'public']);
 
 
 // --- Setting up browser sync - see https://github.com/shakyShane/browser-sync ---
-gulp.task('browser-sync', ['build'], function() {  
+gulp.task('browser-sync', ['clean'], function() {  
+  gulp.start('build');
+
   browserSync.init([
     'build/assets/styles/*.css', 
     'build/assets/scripts/**/*.js',
@@ -84,15 +93,7 @@ gulp.task('browser-sync', ['build'], function() {
   ], {
     server: {
       baseDir: './build/'
-    },
-    ghostMode: {
-      clickedLinks: true, // Allow click events on <a> elements (buggy, avoid if possible)
-      clicks: true,
-      links: false,
-      forms: true,
-      scroll: true
-    },
-    timestamps: false // turn this off, and allow chrome to write to disk and see magic happens across devices when you change stuff in style inspector.
+    }
   });
 });
 
@@ -112,4 +113,13 @@ gulp.task('watch', ['browser-sync'], function () {
 // --- Default gulp task, run with gulp. - Starts our project and opens a new browser window.
 gulp.task('default', ['clean'], function(){
   gulp.start('watch');
+});
+
+gulp.task('heroku', ['clean'], function() {
+  gulp.start('build');
+  var port = process.env.PORT || 3000;
+   
+  server.listen(port, function() {
+    console.log("Listening on " + port);
+  });
 });

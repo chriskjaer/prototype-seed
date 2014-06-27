@@ -3,25 +3,28 @@
   "version": "0.0.1",
   "description": "Prototype Seed",
   "author": "Chris Kjaer",
-  "main": "heroku.js",
+  "main": "gulpfile.js",
   "scripts": {
-    "start": "heroku.js"
+    "postinstall": "bower install"
   },
   "engines": {
     "node": "0.10",
     "npm": "1.3"
   },
-  "devDependencies": {
-    "gulp-concat": "~2.1.7",
-    "gulp-util": "~2.2.12",
-    "gulp": "~3.5.0",
-    "gulp-uglify": "~0.1.0",
-    "marked": "~0.3.0",
-    "gulp-jade": "~0.4.0",
+  "devDependencies": {},
+  "dependencies": {
     "browser-sync": "~0.5.3",
-    "gulp-clean": "~0.2.4",
+    "del": "^0.1.1",
+    "express": "^4.4.5",
+    "gulp": "~3.5.0",
+    "gulp-concat": "~2.1.7",
+    "gulp-jade": "~0.4.0",
     "gulp-plumber": "~0.5.6",
     "gulp-sass": "^0.7.1",
-    "gulp-watch": "^0.6.2"
+    "gulp-uglify": "~0.1.0",
+    "gulp-util": "~2.2.12",
+    "gulp-watch": "^0.6.2",
+    "http-auth": "^2.1.8",
+    "marked": "~0.3.0"
   }
 }
