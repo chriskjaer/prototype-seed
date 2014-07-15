@@ -1,5 +1,5 @@
 
-# Simple Gulp Prototyping project.
+# [ Prototype Seed ](https://github.com/chriskjaer/prototype-seed)
 > Includes [BrowserSync](https://github.com/shakyShane/browser-sync) for fast reloading across devices on code changes. [Jade](http://jade-lang.com) templating, [Sass](http://sass-lang.com/), basic html boilerplate with [Respond.js](https://github.com/scottjehl/Respond)(Media Querry fallback) and [Modernizr](http://modernizr.com/) and a simple grid implementation based on a mix of Semantic.gs and Inuit Grid.
 
 ## Installation guide:
