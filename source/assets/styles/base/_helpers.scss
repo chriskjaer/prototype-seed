@@ -1,0 +1,216 @@
+
+// Helpers
+//
+// Various helper classes used throughout the site
+//
+// Styleguide 2.
+
+
+// Positioning
+//
+// The `dummy` class is only for presentation purposes and should be ignored.
+//
+// Markup:
+// <div class="{$modifiers} dummy">{$modifiers}</div>
+//
+// .center        - Centers an element. The element needs to a have a width defined.
+// .left          - Floats the element left.
+// .right         - Floats the element right.
+// .flex-center   - Center aligns items inside of it with flex
+//
+// Styleguide 2.1
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+// Spacing
+//
+// Spacers are used to positioning specific elements. Usually it can be modules
+// or elements that just need a litle nudge in a specific direction and a whole module
+// modifier class is overkill for it.
+//
+// Markup:
+// <div class="{$modifiers}">{$modifiers}</div>
+//
+// .flush       - Clear the bottom margin.
+// .slim        - Half spacer unit for the button `$spacing / 2`
+// .landmark    - Usefull for hero elements. Gives element a double bototm margin.
+// .row         - Turns element into a block element and gives it a bottom margin.
+//
+// Styleguide 2.2
+
+.flush {
+  margin-bottom: 0 !important;
+}
+
+.slim {
+  margin-bottom: $spacing/2 !important;
+}
+
+.row {
+  @extend %clearfix;
+  margin-bottom: $spacing;
+  width: 100%;
+}
+
+.landmark {
+  margin-bottom: $spacing*2 !important;
+}
+
+// Text Helpers
+//
+// Various helpers for text element
+//
+// Markup:
+// <div class="{$modifiers}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nibh nisl, mollis eu pretium ac, porta in nulla. Nam id quam a eros dignissim mollis. Aliquam sed sodales elit. Vivamus venenatis diam quis velit tincidunt, in dapibus nisi rutrum. Etiam consequat, nulla ut dictum rhoncus, justo mauris vestibulum elit, et auctor mauris magna eu sem. Aenean a sapien dolor. Phasellus odio enim, gravida a eleifend non, hendrerit a neque. Donec gravida, diam eu congue viverra, metus nisl porttitor felis, id consequat est nulla a purus. Donec a felis libero. Pellentesque sit amet ultrices odio, commodo pulvinar tortor. Curabitur urna nisi, luctus eu tristique in, lobortis ac neque.</div>
+//
+// .align-right       - Align text right
+// .align-center      - Align text center
+// .align-left        - Align text left
+// .caps              - All CAPS text
+// .capitalize        - Capitalize text
+// .muted             - Muted text
+// .bold              - Makes text bold weight
+// .normal            - Makes text normal weight
+// .light             - Makes text light weight
+//
+// Styleguide 2.3
+
+@each $pos in right, center, left {
+  .align-#{$pos} {
+    text-align: #{$pos};
+  }
+}
+
+.caps {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.muted {
+  filter: alpha(opacity = 50) !important;
+  opacity: .5 !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.normal {
+  font-weight: normal;
+}
+
+.light {
+  font-weight: light;
+}
+
+// Misc. Helpers
+//
+// The `dummy` class is only for presentational purposes.
+//
+// Markup:
+// <div class="{$modifiers} dummy">{$modifiers}</div>
+//
+// .divider         - Divider class. Adds a border to the bottom of the element
+// .square          - Makes the element behave a like a square image and retains its dimensions
+// .rectangle       - Makes the element behave a like a rectangle image and retains its dimensions
+// .cursor          - Change curser to pointer
+//
+// Styleguide 2.4
+
+.divider {
+  border: 0;
+  border-bottom: 1px dotted $color-border-light;
+  padding-bottom: $spacing;
+  margin-bottom: $spacing;
+}
+
+.square {
+  height: 0;
+  padding-bottom: 100%;
+}
+
+.rectangle {
+  height: 0;
+  padding-bottom: 48%;
+  padding-bottom: calc(50% - #{22px/2});
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+// Videos
+//
+// Use the `embed-container` class around embedded videos to get a responsive block.
+//
+// Markup:
+// <div class="embed-container">
+//   <iframe src="http://www.youtube.com/embed/J8wKORctsus"></iframe>
+// </div>
+//
+// Styleguide 2.5
+
+.embed-container { 
+  height: 0;
+  height: auto; 
+  margin-bottom: $spacing;
+  max-width: 100%;
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+
+  iframe,
+  object,
+  embed { 
+    border: 0;
+    height: 100%; 
+    left: 0;
+    position: absolute; 
+    top: 0; 
+    width: 100%; 
+  }
+} 
+
+%layer-bottom {
+  z-index: 100;
+}
+
+%layer-middle {
+  z-index: 500;
+}
+
+%layer-top {
+  z-index: 1000;
+}
+
+.dummy {
+  background-color: darken($color-body, 10%);
+  width: 200px;
+  text-align: center;
+
+  &.square,
+  &.rectangle {
+    width: auto;
+  }
+}

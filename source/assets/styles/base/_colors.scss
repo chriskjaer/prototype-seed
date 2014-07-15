@@ -1,0 +1,23 @@
+
+// Accent Colors
+$color-primary:      #80c700;
+$color-secondary:    #f28100;
+$color-tertiary:     #b6451e;
+
+$color-light:        #fff;
+$color-dark:         #000;
+
+// Fonts
+$color-font-base:    $color-dark;
+$color-body:         darken($color-light, 2%);
+
+// Borders
+$color-border-light: darken($color-body, 10%);
+$color-border-dark:  darken($color-body, 25%);
+
+// Shadows
+$color-shadow-light: darken($color-body, 5%);
+$color-shadow-dark:  darken($color-body, 15%);
+
+// States / Alerts
+$color-error:        #ff6101;

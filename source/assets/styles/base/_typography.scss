@@ -1,0 +1,34 @@
+
+// Font Families
+$font-family-base:   'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+// Font Sizes
+$font-size-base:     15px;
+$font-size-small:    10px;
+$font-size-medium:   18px;
+$font-size-large:    24px;
+
+// Font Weights
+$font-weight-base:   400;
+$font-weight-light:  300;
+$font-weight-heavy:  700;
+
+// Line Heights
+$line-height-base:   1;
+$line-height-small:  1;
+$line-height-medium: 1;
+$line-height-large:  1;
+
+
+small,
+.small {
+  font-size: $font-size-small !important;
+}
+
+.medium {
+  font-size: $font-size-medium !important;
+}
+
+.large {
+  font-size: $font-size-large !important;
+}
