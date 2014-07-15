@@ -109,7 +109,7 @@ gulp.task('kss', function() {
 });
 
 // --- Bringing it all together in a build task ---
-gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor', 'public']);
+gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor', 'public', 'kss']);
 
 
 // --- Setting up browser sync - see https://github.com/shakyShane/browser-sync ---
@@ -132,13 +132,15 @@ gulp.task('browser-sync', ['clean'], function() {
 
 // --- Let gulp keep an eye on our files and compile stuff if it changes ---
 gulp.task('watch', ['browser-sync'], function () {
-  gulp.watch(SOURCE + STYLES + '**/*.scss',['css']);
+  gulp.watch(SOURCE + STYLES + '**/*.scss',['css', 'kss']);
 
   gulp.watch(SOURCE + '**/*.jade',['jade']);
 
   gulp.watch(SOURCE + JS + '**/*.js',['js']);
 
   gulp.watch(SOURCE + IMAGES + '*.*',['images']);
+
+  gulp.watch([SOURCE + 'styleguide-template/**/*.*', 'README.md'],['kss']);
 });
 
 
