@@ -1,6 +1,6 @@
 {
   "name": "prototype-seed",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Prototype Seed",
   "author": "Chris Kjaer",
   "main": "gulpfile.js",
@@ -13,18 +13,18 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "browser-sync": "~0.5.3",
+    "browser-sync": "^1.2.1",
     "del": "^0.1.1",
-    "express": "^4.4.5",
-    "gulp": "~3.5.0",
-    "gulp-concat": "~2.1.7",
-    "gulp-jade": "~0.4.0",
-    "gulp-plumber": "~0.5.6",
-    "gulp-sass": "^0.7.1",
-    "gulp-uglify": "~0.1.0",
-    "gulp-util": "~2.2.12",
+    "express": "^4.6.1",
+    "gulp": "^3.8.6",
+    "gulp-concat": "^2.3.3",
+    "gulp-jade": "^0.6.1",
+    "gulp-plumber": "^0.6.3",
+    "gulp-sass": "^0.7.2",
+    "gulp-uglify": "^0.3.1",
+    "gulp-util": "^2.2.20",
     "gulp-watch": "^0.6.2",
     "http-auth": "^2.1.8",
-    "marked": "~0.3.0"
+    "marked": "^0.3.2"
   }
 }
