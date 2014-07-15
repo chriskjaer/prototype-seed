@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <title>Gloster Styleguide</title>
+  <meta name="generator" content="kss-node" />
+
+  <meta name="viewport" content="width=device-width">
+
+  <script src="../../assets/scripts/vendor.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="public/kss.css">
+  <link rel="stylesheet" href="../../assets/styles/main.css">
+
+</head>
+<body><div id="kss-wrapper">
+  <div id="kss-nav">
+    <header id="kss-header">
+      <img src='../../assets/images/gloster-logo.svg' width='187' height='29' alt='Gloster Logo' />
+    </header>
+    <aside>
+      <nav><ul>
+        <li><a class="link" href="index.html">0.0: Overview</a></li>
+        {{#eachRoot}}
+          <li><a class="link" href="section-{{reference}}.html">{{reference}}.0: {{header}}</a></li>
+        {{/eachRoot}}
+      </ul></nav>
+    </aside>
+  </div>
+  <div role="main" id="kss-main">
+    <div id="kss-content">
+      {{#if overview}}
+        <div class="content has-link-style">
+          {{html overview}}
+        </div>
+      {{else}}
+
+        {{!
+          Find each section, in order.
+          If there's no markup or modifiers supplied, use a Markdown-only
+          layout instead.
+
+          The "root" element comes first in this loop, and can be detected using
+          the "#whenDepth 1" block as seen below.
+        }}
+        {{#eachSection rootNumber}}
+          <section class="kss-section kss-depth-{{ refDepth }}">
+          {{#whenDepth 1}}
+            <h1 class="kss-title"><span class="kss-ref">{{ reference }}.0</span> - {{ header }}</h1>
+          {{else}}
+            <h2 class="kss-title"><span class="kss-ref">{{ reference }}</span> - {{ header }}</h2>
+          {{/whenDepth}}
+            {{#ifAny markup modifiers}}
+                <div class="kss-description content">{{html description}}</div>
+
+                <ul class="kss-modifiers">{{~#eachModifier~}}<li><span class="kss-modifiers__name">{{name}}</span> - {{html description}} </li>{{/eachModifier}}</ul>
+
+                <div class="kss-module">
+                  <div class="kss-rendered-markup">{{modifierMarkup}}</div>
+                </div>
+
+                {{#eachModifier}}
+                <div class="kss-module">
+                  <div class="kss-modifier-class">{{name}}</div>
+                  <div class="kss-rendered-markup">{{modifierMarkup}}</div>
+                </div>
+                {{/eachModifier}}
+
+                <div class="kss-markup">
+                  <pre class="prettyprint lang-html">{{markup}}</pre>
+                </div>
+            {{else}}
+                {{#if description}}
+                  {{html description}}
+                {{/if}}
+            {{/ifAny}}
+          </section>
+        {{/eachSection}}
+      {{/if}}
+    </div>
+  </div>
+  <!-- SCRIPTS -->
+  <script src="public/kss.js"></script>
+  <script src="public/prettify.js"></script>
+  <script src="../../assets/scripts/all.js" type="text/javascript"></script>
+  <script>
+    $(document).ready(function(){
+      // Ensure code blocks are highlighted properly...
+      $('pre>code').addClass('prettyprint');
+      prettyPrint();
+
+    });
+  </script>
+</div></body>
+</html>

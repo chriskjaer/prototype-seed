@@ -20,6 +20,7 @@
     "gulp-autoprefixer": "0.0.8",
     "gulp-concat": "^2.3.3",
     "gulp-jade": "^0.6.1",
+    "gulp-kss": "0.0.2",
     "gulp-plumber": "^0.6.3",
     "gulp-sass": "^0.7.2",
     "gulp-uglify": "^0.3.1",

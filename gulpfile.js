@@ -9,21 +9,33 @@ var gulp        = require('gulp'),
     prefix      = require('gulp-autoprefixer'),
     del         = require('del'),
     server      = require('./server'),
+    kss         = require('gulp-kss'),
     browserSync = require('browser-sync');
+
+var SOURCE = './src/';
+var BUILD = './build/';
+var PUBLIC = './public/';
+
+var ASSETS = 'assets/';
+
+var STYLES  = ASSETS + 'styles/';
+var JS      = ASSETS + 'scripts/';
+var IMAGES  = ASSETS + 'images/';
+var FONTS   = ASSETS + 'fonts/';
 
 //
 // TASKS
 // -------------------------------------------------------------
 
 gulp.task('css', function() {
-  watch({glob: 'src/assets/styles/*.scss'}, function(files) {
+  watch({glob: SOURCE + STYLES + '*.scss'}, function(files) {
     return files.pipe(sass({
         errLogToConsole: true
       }))
       .pipe(prefix("last 1 version", "> 1%", "ie 9").on('error', function (error) {
         console.warn(error.message);
       }))
-      .pipe(gulp.dest('build/assets/styles/'))
+      .pipe(gulp.dest(BUILD + STYLES))
       .pipe(browserSync.reload({stream: true}));
   });
 });
@@ -83,6 +95,15 @@ gulp.task('public', function() {
       gulp.dest('build/')
      );
   });
+});
+
+gulp.task('kss', function() {
+  return gulp.src(['src/assets/styles/**/*.scss'])
+    .pipe(kss({
+      overview: 'README.md',
+      templateDirectory: './styleguide-template'
+    }))
+    .pipe(gulp.dest('build/styleguide/'));
 });
 
 // --- Bringing it all together in a build task ---
