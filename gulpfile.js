@@ -6,6 +6,7 @@ var gulp        = require('gulp'),
     uglify      = require('gulp-uglify'),
     jade        = require('gulp-jade'),
     watch       = require('gulp-watch'),
+    prefix      = require('gulp-autoprefixer'),
     del         = require('del'),
     server      = require('./server'),
     browserSync = require('browser-sync');
@@ -19,16 +20,21 @@ gulp.task('css', function() {
     return files.pipe(sass({
         errLogToConsole: true
       }))
-      .pipe(gulp.dest('build/assets/styles/'));
+      .pipe(prefix("last 1 version", "> 1%", "ie 9").on('error', function (error) {
+        console.warn(error.message);
+      }))
+      .pipe(gulp.dest('build/assets/styles/'))
+      .pipe(browserSync.reload({stream: true}));
   });
 });
 
 gulp.task('js', function() {
-  watch({glob: 'src/assets/scripts/*.js'}, function(files) {
-    return files.pipe(concat('all.js'))
-      .pipe(uglify())
-      .pipe(gulp.dest('build/assets/scripts/'));
-  });
+  return gulp.src([
+      'src/assets/scripts/*.js'
+    ])
+    .pipe(uglify())
+    .pipe(gulp.dest('build/assets/scripts/'))
+    .pipe(browserSync.reload({stream: true, once: true}));
 });
 
 gulp.task('jade', function() {
@@ -36,7 +42,8 @@ gulp.task('jade', function() {
     return files.pipe(jade({
         pretty: true
       }))
-      .pipe(gulp.dest('build/'));
+      .pipe(gulp.dest('build/'))
+      .pipe(browserSync.reload({stream: true, once: true}));
   });
 });
 
@@ -86,13 +93,15 @@ gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor', 'public'])
 gulp.task('browser-sync', ['clean'], function() {  
   gulp.start('build');
 
-  browserSync.init([
-    'build/assets/styles/*.css', 
-    'build/assets/scripts/**/*.js',
-    'build/*.html'
-  ], {
+  return browserSync({
     server: {
-      baseDir: './build/'
+      baseDir: 'build'
+    },
+    ghostMode: {
+      clicks: true,
+      location: true,
+      forms: true,
+      scroll: true
     }
   });
 });
