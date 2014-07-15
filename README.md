@@ -48,8 +48,8 @@ and it will automaticly deploy the newest code to heroku and build it there.
 
 
 ### Todo
-- Add KSS Styleguide
-- Add Normalize to css
-- Add boilerplate Sass setup
-- Add grid system
-- Update layout.jade with more bestpractices from HTML5 Boilerplate
+- ~~Add KSS Styleguide~~ :white_check_mark:
+- ~~Add Normalize to css~~ :white_check_mark:
+- ~~Add boilerplate Sass setup~~ :white_check_mark:
+- ~~Add grid system~~ :white_check_mark:
+- ~~Update layout.jade with more bestpractices from HTML5 Boilerplate~~ :white_check_mark:
