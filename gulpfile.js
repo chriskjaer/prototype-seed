@@ -12,21 +12,23 @@ var gulp        = require('gulp'),
     kss         = require('gulp-kss'),
     browserSync = require('browser-sync');
 
-var SOURCE = './src/';
-var BUILD = './build/';
-var PUBLIC = './public/';
 
-var ASSETS = 'assets/';
+//
+// Paths
+// -------------------------------------------------------------
+var SOURCE = 'source/',
+    BUILD  = 'build/',
+    PUBLIC = 'public/',
+    ASSETS = 'assets/',
+    STYLES = ASSETS + 'styles/',
+    JS     = ASSETS + 'scripts/',
+    IMAGES = ASSETS + 'images/',
+    FONTS  = ASSETS + 'fonts/';
 
-var STYLES  = ASSETS + 'styles/';
-var JS      = ASSETS + 'scripts/';
-var IMAGES  = ASSETS + 'images/';
-var FONTS   = ASSETS + 'fonts/';
 
 //
 // TASKS
 // -------------------------------------------------------------
-
 gulp.task('css', function() {
   watch({glob: SOURCE + STYLES + '*.scss'}, function(files) {
     return files.pipe(sass({
@@ -42,35 +44,35 @@ gulp.task('css', function() {
 
 gulp.task('js', function() {
   return gulp.src([
-      'src/assets/scripts/*.js'
+      SOURCE + JS + '*.js'
     ])
     .pipe(uglify())
-    .pipe(gulp.dest('build/assets/scripts/'))
+    .pipe(gulp.dest(BUILD + JS))
     .pipe(browserSync.reload({stream: true, once: true}));
 });
 
 gulp.task('jade', function() {
-  watch({glob: 'src/*.jade'}, function(files) {
+  watch({glob: SOURCE + '*.jade'}, function(files) {
     return files.pipe(jade({
         pretty: true
       }))
-      .pipe(gulp.dest('build/'))
+      .pipe(gulp.dest(BUILD))
       .pipe(browserSync.reload({stream: true, once: true}));
   });
 });
 
 gulp.task('images', function() {
-  watch({glob: 'src/assets/images/*.*'}, function(files) {
+  watch({glob: SOURCE + IMAGES + '*.*'}, function(files) {
     return files.pipe(
-        gulp.dest('build/assets/images/')
+        gulp.dest(BUILD + IMAGES)
       );
   });
 });
 
 gulp.task('fonts', function() {   
-  watch({glob: 'src/assets/fonts/*.*'}, function(files) {
+  watch({glob: SOURCE + FONTS + '*.*'}, function(files) {
     return files.pipe(
-        gulp.dest('build/assets/fonts/')
+        gulp.dest(BUILD + FONTS)
       );
   });
 });
@@ -82,28 +84,28 @@ gulp.task('vendor', function() {
     ])
     .pipe(concat('vendor.js'))
     .pipe(uglify())
-    .pipe( gulp.dest('build/assets/scripts/'));
+    .pipe( gulp.dest(BUILD + JS));
 });
 
 gulp.task('clean', function(cb){
-  return del(['./build'], cb);
+  return del([BUILD], cb);
 });
 
 gulp.task('public', function() {
-  watch({glob: 'src/public/**/*.*'}, function(files) {
+  watch({glob: PUBLIC + '**/*.*'}, function(files) {
     return files.pipe(
-      gulp.dest('build/')
+      gulp.dest(BUILD)
      );
   });
 });
 
 gulp.task('kss', function() {
-  return gulp.src(['src/assets/styles/**/*.scss'])
+  return gulp.src([SOURCE + STYLES + '**/*.scss'])
     .pipe(kss({
       overview: 'README.md',
-      templateDirectory: './styleguide-template'
+      templateDirectory: SOURCE + 'styleguide-template/'
     }))
-    .pipe(gulp.dest('build/styleguide/'));
+    .pipe(gulp.dest(BUILD + 'styleguide/'));
 });
 
 // --- Bringing it all together in a build task ---
@@ -116,7 +118,7 @@ gulp.task('browser-sync', ['clean'], function() {
 
   return browserSync({
     server: {
-      baseDir: 'build'
+      baseDir: BUILD
     },
     ghostMode: {
       clicks: true,
@@ -130,13 +132,13 @@ gulp.task('browser-sync', ['clean'], function() {
 
 // --- Let gulp keep an eye on our files and compile stuff if it changes ---
 gulp.task('watch', ['browser-sync'], function () {
-  gulp.watch('src/assets/styles/**/*.scss',['css']);
+  gulp.watch(SOURCE + STYLES + '**/*.scss',['css']);
 
-  gulp.watch('src/**/*.jade',['jade']);
+  gulp.watch(SOURCE + '**/*.jade',['jade']);
 
-  gulp.watch('src/assets/scripts/**/*.js',['js']);
+  gulp.watch(SOURCE + JS + '**/*.js',['js']);
 
-  gulp.watch('src/assets/images/*.*',['images']);
+  gulp.watch(SOURCE + IMAGES + '*.*',['images']);
 });
 
 
@@ -145,6 +147,8 @@ gulp.task('default', ['clean'], function(){
   gulp.start('watch');
 });
 
+
+// --- Heroku Task. Is only run when deployed to heroku.
 gulp.task('heroku', ['clean'], function() {
   gulp.start('build');
   var port = process.env.PORT || 3000;
