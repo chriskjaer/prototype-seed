@@ -1,0 +1,16 @@
+
+// Base Spacing Unit
+$spacing: 22px;
+
+// Widths
+$max-page-width: 1280px;
+
+// Radius
+$radius-base: 8px;
+$radius-large: $radius-base * 1.75;
+$radius-small: $radius-base / 2;
+
+// Time
+$time-slow: .5s;
+$time-fast: .1s;
+

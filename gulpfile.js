@@ -6,52 +6,73 @@ var gulp        = require('gulp'),
     uglify      = require('gulp-uglify'),
     jade        = require('gulp-jade'),
     watch       = require('gulp-watch'),
+    prefix      = require('gulp-autoprefixer'),
     del         = require('del'),
     server      = require('./server'),
+    kss         = require('gulp-kss'),
     browserSync = require('browser-sync');
+
+
+//
+// Paths
+// -------------------------------------------------------------
+var SOURCE = 'source/',
+    BUILD  = 'build/',
+    PUBLIC = 'public/',
+    ASSETS = 'assets/',
+    STYLES = ASSETS + 'styles/',
+    JS     = ASSETS + 'scripts/',
+    IMAGES = ASSETS + 'images/',
+    FONTS  = ASSETS + 'fonts/';
+
 
 //
 // TASKS
 // -------------------------------------------------------------
-
 gulp.task('css', function() {
-  watch({glob: 'src/assets/styles/*.scss'}, function(files) {
+  watch({glob: SOURCE + STYLES + '*.scss'}, function(files) {
     return files.pipe(sass({
         errLogToConsole: true
       }))
-      .pipe(gulp.dest('build/assets/styles/'));
+      .pipe(prefix("last 1 version", "> 1%", "ie 9").on('error', function (error) {
+        console.warn(error.message);
+      }))
+      .pipe(gulp.dest(BUILD + STYLES))
+      .pipe(browserSync.reload({stream: true}));
   });
 });
 
 gulp.task('js', function() {
-  watch({glob: 'src/assets/scripts/*.js'}, function(files) {
-    return files.pipe(concat('all.js'))
-      .pipe(uglify())
-      .pipe(gulp.dest('build/assets/scripts/'));
-  });
+  return gulp.src([
+      SOURCE + JS + '*.js'
+    ])
+    .pipe(uglify())
+    .pipe(gulp.dest(BUILD + JS))
+    .pipe(browserSync.reload({stream: true, once: true}));
 });
 
 gulp.task('jade', function() {
-  watch({glob: 'src/*.jade'}, function(files) {
+  watch({glob: SOURCE + '*.jade'}, function(files) {
     return files.pipe(jade({
         pretty: true
       }))
-      .pipe(gulp.dest('build/'));
+      .pipe(gulp.dest(BUILD))
+      .pipe(browserSync.reload({stream: true, once: true}));
   });
 });
 
 gulp.task('images', function() {
-  watch({glob: 'src/assets/images/*.*'}, function(files) {
+  watch({glob: SOURCE + IMAGES + '*.*'}, function(files) {
     return files.pipe(
-        gulp.dest('build/assets/images/')
+        gulp.dest(BUILD + IMAGES)
       );
   });
 });
 
 gulp.task('fonts', function() {   
-  watch({glob: 'src/assets/fonts/*.*'}, function(files) {
+  watch({glob: SOURCE + FONTS + '*.*'}, function(files) {
     return files.pipe(
-        gulp.dest('build/assets/fonts/')
+        gulp.dest(BUILD + FONTS)
       );
   });
 });
@@ -63,36 +84,47 @@ gulp.task('vendor', function() {
     ])
     .pipe(concat('vendor.js'))
     .pipe(uglify())
-    .pipe( gulp.dest('build/assets/scripts/'));
+    .pipe( gulp.dest(BUILD + JS));
 });
 
 gulp.task('clean', function(cb){
-  return del(['./build'], cb);
+  return del([BUILD], cb);
 });
 
 gulp.task('public', function() {
-  watch({glob: 'src/public/**/*.*'}, function(files) {
+  watch({glob: PUBLIC + '**/*.*'}, function(files) {
     return files.pipe(
-      gulp.dest('build/')
+      gulp.dest(BUILD)
      );
   });
 });
 
+gulp.task('kss', function() {
+  return gulp.src([SOURCE + STYLES + '**/*.scss'])
+    .pipe(kss({
+      overview: 'README.md',
+      templateDirectory: SOURCE + 'styleguide-template/'
+    }))
+    .pipe(gulp.dest(BUILD + 'styleguide/'));
+});
+
 // --- Bringing it all together in a build task ---
-gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor', 'public']);
+gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor', 'public', 'kss']);
 
 
 // --- Setting up browser sync - see https://github.com/shakyShane/browser-sync ---
 gulp.task('browser-sync', ['clean'], function() {  
   gulp.start('build');
 
-  browserSync.init([
-    'build/assets/styles/*.css', 
-    'build/assets/scripts/**/*.js',
-    'build/*.html'
-  ], {
+  return browserSync({
     server: {
-      baseDir: './build/'
+      baseDir: BUILD
+    },
+    ghostMode: {
+      clicks: true,
+      location: true,
+      forms: true,
+      scroll: true
     }
   });
 });
@@ -100,13 +132,15 @@ gulp.task('browser-sync', ['clean'], function() {
 
 // --- Let gulp keep an eye on our files and compile stuff if it changes ---
 gulp.task('watch', ['browser-sync'], function () {
-  gulp.watch('src/assets/styles/**/*.scss',['css']);
+  gulp.watch(SOURCE + STYLES + '**/*.scss',['css', 'kss']);
 
-  gulp.watch('src/**/*.jade',['jade']);
+  gulp.watch(SOURCE + '**/*.jade',['jade']);
 
-  gulp.watch('src/assets/scripts/**/*.js',['js']);
+  gulp.watch(SOURCE + JS + '**/*.js',['js']);
 
-  gulp.watch('src/assets/images/*.*',['images']);
+  gulp.watch(SOURCE + IMAGES + '*.*',['images']);
+
+  gulp.watch([SOURCE + 'styleguide-template/**/*.*', 'README.md'],['kss']);
 });
 
 
@@ -115,6 +149,8 @@ gulp.task('default', ['clean'], function(){
   gulp.start('watch');
 });
 
+
+// --- Heroku Task. Is only run when deployed to heroku.
 gulp.task('heroku', ['clean'], function() {
   gulp.start('build');
   var port = process.env.PORT || 3000;

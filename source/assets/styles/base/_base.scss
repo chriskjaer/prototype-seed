@@ -1,0 +1,105 @@
+//
+// Let's add some sensible defaults.
+// ---------------------------------------------------
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+*:after,
+*:before,
+button,
+input,
+textarea {
+  -webkit-font-smoothing: antialiased; // Anti-Aliasing on Chrome/Safari mac.
+}
+
+html {
+  min-height: 100%;
+  height: 100%;
+  width: 100%;
+  background-color: $color-body;
+}
+
+body {
+  background-color: $color-body;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-base;
+  color: $color-font-base;
+  line-height: 1.5;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  @extend %clearfix;
+  margin: 0 auto;
+  max-width: $max-page-width;
+  padding-left: $spacing/2;
+  padding-right: $spacing/2;
+
+  @include media(lap-and-up) {
+    padding-left: $spacing;
+    padding-right: $spacing;
+  }
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+hgroup,
+ul,
+ol,
+dl,
+blockquote,
+p,
+address,
+table,
+fieldset,
+figure,
+pre,
+hr {
+  margin-bottom: $spacing;
+  margin-top: 0;
+}
+
+// Remove Link styling.
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Add proper link styling with this, when outside e.g. a content area
+.link {
+  border-bottom: 1px dotted $color-secondary;
+  color: $color-secondary;
+  transition: 
+    background-color $time-fast,
+    color $time-fast;
+
+  &:visited {
+    border-bottom-color: $color-dark;
+    color: $color-dark;
+  }
+
+  &:hover {
+    background-color: $color-dark;
+    border-bottom: 0;
+    color: $color-light;
+  }
+}
+
+// Use this to define an area where we need proper link styles, e.g content area or footer.
+.has-link-style {
+  a {
+    @extend .link;
+  }
+}
+

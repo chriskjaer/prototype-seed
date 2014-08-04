@@ -1,0 +1,389 @@
+@import 'styles/variables';
+@import 'styles/markdown';
+
+.cf{
+  &:after{
+    content:"";
+    display:table;
+    clear:both;
+  }
+}
+
+body {
+  position: static !important;
+  border-color: #005284 !important;
+  background-color: @color-body;
+  overflow-y: auto !important;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+
+  > code {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    border: none;
+    background: transparent;
+  }
+}
+
+code {
+  margin: 0;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  padding: .1em .2em;
+}
+
+#kss-wrapper {
+  display: table;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#kss-nav {
+  width: 250px;
+  height: 100%;
+  display: table-cell;
+  background-color: @color-body;
+  box-shadow: inset -15px -10px 25px rgba(0, 0, 0, 0.4);
+
+ ul {
+    padding:0;
+    margin-left: @spacing;
+    list-style-type:none;
+  }
+
+  li {
+    margin-bottom: 11px;
+  }
+}
+
+#kss-header {
+  margin-top: @spacing*2;
+  padding-left: @spacing;
+  padding-right: @spacing;
+  margin-left: -3px;
+  max-width: 250px;
+
+  img {
+    width: 100%;
+    margin-bottom: @spacing/2;
+  }
+}
+
+#kss-content {
+  margin-top: 3em;
+  max-width: 700px;
+}
+
+#kss-main {
+  padding-left: @spacing*2;
+  display: table-cell;
+}
+
+.kss-markup {
+  margin-top: 44px;
+
+  pre {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 1em;
+  }
+}
+
+.kss-mod-list {
+  width:100%;
+}
+
+.kss-mod-desc-group {
+  position: relative;
+  display: block;
+  padding-top: 1em;
+  margin-top: 5em;
+  border-top: 1px solid #ddd;
+
+  &:first-of-type {
+    margin-top: 0;
+    border-top: 0; 
+  }
+}
+
+.kss-mod-desc {
+  p {
+    margin-bottom: 11px;
+  }
+}
+
+.kss-mod-name {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 15px;
+  font-size: 11px;
+  color: #999;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-top: none;
+
+  &:empty {
+    display: none;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.kss-mod-example {
+  td {
+  }
+}
+
+a.pseudo-class-hover {
+  color: 0;
+}
+
+// ------------------------------------------------------------------------------
+//   @group prettyprint.js styling
+// ------------------------------------------------------------------------------
+/* Pretty printing styles. Used with prettify.js. */
+
+/* SPAN elements with the classes below are added by prettyprint. */
+.pln { color: #000 }  /* plain text */
+
+@media screen {
+  .str { color: #080 }  /* string content */
+  .kwd { color: #008 }  /* a keyword */
+  .com { color: #800 }  /* a comment */
+  .typ { color: #606 }  /* a type name */
+  .lit { color: #066 }  /* a literal value */
+  /* punctuation, lisp open bracket, lisp close bracket */
+  .pun, .opn, .clo { color: #660 }
+  .tag { color: #008 }  /* a markup tag name */
+  .atn { color: #606 }  /* a markup attribute name */
+  .atv { color: #080 }  /* a markup attribute value */
+  .dec, .var { color: #606 }  /* a declaration; a variable name */
+  .fun { color: red }  /* a function name */
+}
+
+/* Use higher contrast and text-weight for printable form. */
+@media print, projection {
+  .str { color: #060 }
+  .kwd { color: #006; font-weight: bold }
+  .com { color: #600; font-style: italic }
+  .typ { color: #404; font-weight: bold }
+  .lit { color: #044 }
+  .pun, .opn, .clo { color: #440 }
+  .tag { color: #006; font-weight: bold }
+  .atn { color: #404 }
+  .atv { color: #060 }
+}
+
+/* Put a border around prettyprinted code snippets. */
+/*pre.prettyprint { padding: 2px; border: 1px solid #888 }*/
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums { margin-top: 0; margin-bottom: 0 } /* IE indents via margin-left */
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L5,
+li.L6,
+li.L7,
+li.L8 { list-style-type: none }
+/* Alternate shading for lines */
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 { background: #eee }
+
+.kss-module {
+  padding-top: @spacing;
+  padding-bottom: @spacing * 1.5;
+  padding-left: @spacing;
+  margin-left: -@spacing;
+  margin-bottom: @spacing;
+  border-bottom: 1px dotted rgba(213, 213, 213, 0.4);
+  position: relative;
+
+  &:extend(.cf all);
+}
+
+.kss-modifiers {
+  margin-bottom: @spacing;
+  margin-left: -@spacing*2;
+  padding-bottom: @spacing;
+
+  &:empty { display: none; }
+
+  li { 
+    margin-bottom: @spacing;
+    margin-left: @spacing;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    display: inline-block;
+    margin: 0;
+  }
+
+  + .kss-module {
+    padding-top: @spacing*2;
+  }
+
+  &:before {
+    content: 'Modifiers: ';
+    display: block;
+    margin-bottom: @spacing;
+    margin-top: @spacing*2;
+    margin-left: -@spacing + 4px;
+    padding-left: @spacing;
+    padding-top: @spacing;
+    border-top: 1px dotted rgba(213, 213, 213, 0.4);
+    font-size: 150%;
+  }
+}
+
+
+.kss-modifiers__name {
+  font-weight: bold;
+}
+
+.kss-description {
+  margin-bottom: 0 !important;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.kss-section {
+  margin-bottom: 44px;
+  margin-left: -@spacing*2;
+  padding-left: @spacing;
+  padding-bottom: 11px;
+}
+
+.kss-modifier-class {
+  display: block;
+  position: absolute;
+  top: -13px;
+  right: 0;
+  border-radius: 3px;
+  padding: 5px 15px;
+  font-size: 11px;
+  color: #000;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-top: none;
+}
+
+.kss-title {
+  text-transform: capitalize;
+}
+
+.grid {
+  text-align: center;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+
+  &:after {
+    display: block !important;
+    background-color: rgba(0, 0, 0, .15);
+    border-radius: 5px;
+    width: ~'calc(100% - 22px)';
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 11px;
+  }
+}
+
+.kss-module [class^='{$modifiers}'] {
+  display: none;
+}
+
+// ------------------------------------------------------------------------------
+//   @group Mobile/Tablet Styling
+// ------------------------------------------------------------------------------
+@media screen and (max-width: 960px) {
+  #kss-main {
+    display: block;
+    padding-left:0;
+    width: 100%;
+  }
+
+  #kss-content {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #kss-nav {
+    height: auto;
+    display:block;
+    width:auto;
+    margin:0;
+    background:0;
+    box-shadow:none;
+    border-bottom:1px dotted #ddd;
+    nav>ul {
+      margin-top:0.5em;
+      margin-bottom:0.5em;
+
+      &>li {
+        display:inline-block;
+        padding-right:1.5em;
+      }
+    }
+  }
+
+  .kss-section,
+  .kss-module {
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  #kss-github {
+    display:none;
+  }
+
+  #kss-content {
+    padding-left: @spacing/2;
+    padding-right: @spacing/2;
+  }
+}
+
+code {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  color: #000;
+  display: inline-block;
+  margin: 0;
+  padding: 0 .5em;
+}
+// @end
+

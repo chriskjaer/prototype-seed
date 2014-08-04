@@ -1,0 +1,17 @@
+
+//
+// State helpers. Hide items based on current breakpoint
+// -----------------------------------------------------
+
+.is-hidden {
+  display: none !important;
+}
+
+@each $breakpoint in $breakpoints {
+  @include media($breakpoint) {
+    .is-hidden--#{$breakpoint}{
+      display: none !important;
+    }
+  }
+}
+

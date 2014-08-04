@@ -1,0 +1,251 @@
+
+// How many columns should this grid have?
+$grid-columns-total: 12 !default;
+
+// Breakpoints
+$palm-small:         321px !default;
+$lap-start:          681px !default;
+$desk-start:         960px !default;
+$desk-wide-start:    1200px !default;
+$ultra-wide:         1600px !default;
+$palm-end:           ($lap-start - 1px) !default;
+$lap-end:            ($desk-start - 1px) !default;
+$desk-end:           ($desk-wide-start - 1px) !default;
+
+// Breakpoint Suffixes. The Grid will be generated from this array.
+$breakpoints:        'palm', 'lap', 'lap-and-up', 'portable', 'desk', 'desk-wide', 'ultra-wide' !default;
+
+// Base Variables
+$transitions:        true !default;
+$spacing:            22px !default;
+
+@mixin media($media) {
+  @if $media == 'palm-small' {
+    @media only screen and (max-width:$palm-small) { @content; }
+  }
+
+  @if $media == 'palm' {
+    @media only screen and (max-width:$palm-end) { @content; }
+  }
+
+  @if $media == 'lap' {
+    @media only screen and (min-width:$lap-start) and (max-width:$lap-end) { @content; }
+  }
+
+  @if $media == 'lap-and-up' {
+    @media only screen and (min-width:$lap-start) { @content; }
+  }
+
+  @if $media == 'portable' {
+    @media only screen and (max-width:$lap-end) { @content; }
+  }
+
+  @if $media == 'desk'{
+    @media only screen and (min-width:$desk-start) { @content; }
+  }
+
+  @if $media == 'desk-wide'{
+    @media only screen and (min-width: $desk-wide-start) { @content; }
+  }
+
+  @if $media == 'below-desk-wide'{
+    @media only screen and (max-width: $desk-wide-start) { @content; }
+  }
+
+  @if $media == 'ultra-wide'{
+    @media only screen and (min-width: $ultra-wide) { @content; }
+  }
+}
+
+@mixin grid-generate($namespace: '') {
+  @for $i from 1 through $grid-columns-total {
+    .size-#{$i}#{$namespace} {
+      width: ($i / $grid-columns-total) * 100%;
+    }
+  }
+
+  .clear#{$namespace} {
+    clear: both;
+  }
+}
+
+// Generate Grid without suffix.
+@include grid-generate();
+
+// Generate Grid with all the breakpoint suffix
+@each $breakpoint in $breakpoints {
+  @include media($breakpoint) {
+    @include grid-generate('--#{$breakpoint}');
+  }
+}
+
+@mixin clearfix() {
+  &:after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+
+%clearfix {
+  @include clearfix;
+}
+
+.grid {
+  @extend %clearfix;
+  float: left;
+  padding-left: $spacing/2;
+  padding-right: $spacing/2;
+
+  @if $transitions == true {
+    transition: .3s width;
+  }
+}
+
+.grid--last {
+  @extend %clearfix;
+  float: right;
+}
+
+.grid-group {
+  @extend %clearfix;
+  margin-left: -$spacing/2;
+  margin-right: -$spacing/2;
+  float: none;
+}
+
+.grid-group--reverse {
+  > .grid {
+    float: right;
+  }
+}
+
+//
+// Grid
+//
+// The grid is based on 12 columns. (This can be changed in the grid settings).
+// The grid is explicitly writtin and everything can be read directly from classes.
+//
+// E.g: `size-6` means: span 6 columns out of 12. (50%).
+//
+// Markup:
+// <div class="grid-group {$modifiers}">
+//   <div class="grid size-2">
+//     size-2
+//   </div>
+//   <div class="grid grid--last size-10">
+//     size-10 grid--last
+//   </div>
+//   <div class="grid size-6">
+//     size-6
+//   </div>
+//   <div class="grid size-2">
+//     size-2
+//   </div>
+// </div>
+//
+// .grid-group--reverse     - Same html, same order but reversed with CSS. Includes `grid--last` elements.
+//
+// Styleguide 1
+
+
+//
+// Responsive
+//
+// We use ergonic breakpoints: Palm, Lap, Desk, Desk-wide.
+// The following modifiers can be used:
+//
+// - desk
+// - desk-wide
+// - lap
+// - palm
+// - portable (lap + palm)
+// - lap-and-up (lap+)
+// For the exact pixel breakpoints. See the grid.scss in the stylesheet folder.
+//
+// E.g: `size-6` means: span 6 columns out of 12. (50%).
+//
+// Markup:
+// <div class="grid-group">
+//   <div class="grid size-6--desk-wide size-2 size-9--lap size-12--palm">
+//     size-2
+//     size-6--desk-wide
+//     size-9--lap
+//     size-12--palm
+//   </div>
+//   <div class="grid size-6--desk-wide size-10 size-3--lap size-12--palm">
+//     size-10
+//     size-6--desk-wide
+//     size-3--lap
+//     size-12--palm
+//   </div>
+// </div>
+//
+// Styleguide 1.1
+
+// Nesting Grid Elements
+// 
+// Everything is based on proportions, so a `size-6` inside a `size-6` will still be 50%
+//
+// Markup:
+// <div class="grid-group">
+//   <div class="grid size-12">
+//     size-12
+//     <div class="grid-group">
+//       <div class="grid size-6">
+//         size-6
+//         <div class="grid-group">
+//           <div class="grid size-6">
+//             size-6
+//           </div>
+//           <div class="grid size-6">
+//             size-6
+//           </div>
+//         </div>
+//       </div>
+//       <div class="grid size-6">
+//         size-6
+//         <div class="grid-group">
+//           <div class="grid size-6">
+//             size-6
+//           </div>
+//           <div class="grid size-6">
+//             size-6
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// </div>
+//
+// Styleguide 1.2
+
+// Force Rows
+//
+// Sometimes it's necessary to dictate the rows. e.g. if the elements in the grid have
+// varying heights.
+// 
+// It's also possible to define rows in different breakpoints by using the breakpoint modifiers
+// we also use on the grid. e.g: `clear--palm` to start a row in palm only.
+//
+// Markup:
+// <div class="grid-group">
+//   <div class="grid size-2">
+//     size-2
+//   </div>
+//   <div class="grid size-3">
+//     size-3
+//   </div>
+//   <div class="grid size-2">
+//     size-2
+//   </div>
+//   <div class="grid size-4 clear">
+//     size-4 clear
+//   </div>
+//   <div class="grid size-2">
+//     size-2
+//   </div>
+// </div>
+// 
+// Styleguide 1.3
+
