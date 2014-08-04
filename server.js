@@ -5,6 +5,10 @@ var express = require('express'),
        path = require('path'),
        auth = require('http-auth');
 
+// Auth Config
+var USER    = 'prototype',
+    PASS    = 'iddqd',
+    USEAUTH = false;
 
 var basic = auth.basic({
     realm: 'Prototype'
@@ -12,17 +16,11 @@ var basic = auth.basic({
     callback(username === USER && password === PASS);
   });
 
-// Auth Config
-var USER = 'prototype',
-    PASS = 'iddqd',
-    USEAUTH = false;
-
-
-app.use(express.static(path.resolve('./build')));
-
 if (USEAUTH) {
   app.use(auth.connect(basic));
 }
+
+app.use(express.static(path.resolve('./build')));
 
 //Heroku
 module.exports = app;
