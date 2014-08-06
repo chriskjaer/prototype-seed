@@ -1,12 +1,17 @@
+// Typography
+//
+// Styleguide 3.
 
 // Font Families
 $font-family-base:   'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 // Font Sizes
-$font-size-base:     15px;
-$font-size-small:    10px;
+$font-size-base:     14px;
+
+$font-size-xlarge:   34px;
+$font-size-large:    20px;
 $font-size-medium:   18px;
-$font-size-large:    24px;
+$font-size-small:    10px;
 
 // Font Weights
 $font-weight-base:   400;
@@ -14,21 +19,98 @@ $font-weight-light:  300;
 $font-weight-heavy:  700;
 
 // Line Heights
-$line-height-base:   1;
-$line-height-small:  1;
-$line-height-medium: 1;
-$line-height-large:  1;
+$line-height-base:   1.3;
 
+// Font Size Helpers Classes
+.xlarge {
+  font-size: $font-size-xlarge !important;
+}
 
-small,
-.small {
-  font-size: $font-size-small !important;
+.large {
+  font-size: $font-size-large !important;
 }
 
 .medium {
   font-size: $font-size-medium !important;
 }
 
-.large {
-  font-size: $font-size-large !important;
+.small {
+  font-size: $font-size-small !important;
+}
+
+%limit-width {
+  max-width: 40rem;
+}
+
+%push-bottom {
+  margin-bottom: $spacing;
+}
+
+%flush-top {
+  margin-top: 0;
+}
+
+
+// Base headers
+//
+// Markup: 
+// <h1>Heading (h1)</h1>
+// <h2>Heading (h2)</h2>
+// <h3>Heading (h3)</h3>
+// <h4>Heading (h4)</h4>
+// <h5>Heading (h5)</h5>
+// <h6>Heading (h6)</h6>
+// 
+// Styleguide 3.1
+
+// Header classes
+//
+// Use these to get a specific header without using a header tag
+//
+// Markup:
+// <span class="{$modifiers}">{$modifiers}</span>
+//
+// .alpha                     - h1
+// .beta                      - h2
+// .gamma                     - h3
+// .delta                     - h4
+// .epsilon                   - h5
+// .zeta                      - h6
+//
+// Styleguide 3.2
+
+h1,
+.alpha {
+  @extend %limit-width;
+  @extend %push-bottom;
+  @extend %flush-top;
+  font-size: $font-size-xlarge;
+  font-weight: $font-weight-heavy;
+  margin-bottom: $spacing;
+}
+
+h2,
+.beta,
+.lead {
+  @extend %limit-width;
+  @extend %push-bottom;
+  @extend %flush-top;
+  font-size: $font-size-large;
+  font-weight: $font-weight-base;
+  margin-bottom: $spacing;
+}
+
+h3, .gamma,
+h4, .delta,
+h5, .epsilon,
+h6, .zeta {
+  @extend %limit-width;
+  @extend %flush-top;
+  font-size: $font-size-medium;
+  font-weight: $font-weight-heavy;
+  margin-bottom: 0;
+}
+
+p {
+  @extend %limit-width;
 }
