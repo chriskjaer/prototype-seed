@@ -34,9 +34,11 @@ gulp.task('css', function() {
     return files.pipe(sass({
         errLogToConsole: true
       }))
-      .pipe(prefix("last 1 version", "> 1%", "ie 9").on('error', function (error) {
-        console.warn(error.message);
-      }))
+      .pipe(prefix("last 1 version", "> 1%", "ie 9")
+        .on('error', function (error) {
+          console.warn(error.message);
+        })
+      )
       .pipe(gulp.dest(BUILD + STYLES))
       .pipe(browserSync.reload({stream: true}));
   });
@@ -46,7 +48,11 @@ gulp.task('js', function() {
   return gulp.src([
       SOURCE + JS + '*.js'
     ])
-    .pipe(uglify())
+    .pipe(uglify()
+      .on('error', function (error) {
+        console.warn(error.message);
+      })
+    )
     .pipe(gulp.dest(BUILD + JS))
     .pipe(browserSync.reload({stream: true, once: true}));
 });
@@ -54,8 +60,12 @@ gulp.task('js', function() {
 gulp.task('jade', function() {
   watch({glob: SOURCE + '*.jade'}, function(files) {
     return files.pipe(jade({
-        pretty: true
-      }))
+          pretty: true
+        })
+        .on('error', function (error) {
+          console.warn(error.message);
+        })
+      )
       .pipe(gulp.dest(BUILD))
       .pipe(browserSync.reload({stream: true, once: true}));
   });
