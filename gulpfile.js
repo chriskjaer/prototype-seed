@@ -30,92 +30,81 @@ var SOURCE = 'source/',
 // TASKS
 // -------------------------------------------------------------
 gulp.task('css', function() {
-  watch({glob: SOURCE + STYLES + '*.scss'}, function(files) {
-    return files.pipe(sass({
-        errLogToConsole: true
-      }))
-      .pipe(prefix("last 1 version", "> 1%", "ie 9")
-        .on('error', function (error) {
-          console.warn(error.message);
-        })
-      )
-      .pipe(gulp.dest(BUILD + STYLES))
-      .pipe(browserSync.reload({stream: true}));
-  });
+  var FILES = SOURCE + STYLES + '*.scss';
+  gulp.src(FILES)
+    .pipe(watch(FILES, function(files) {
+      return files
+        .pipe(sass({ errLogToConsole: true }))
+        .pipe(prefix("last 1 version", "> 1%", "ie 9")
+              .on('error', function (error) { console.warn(error.message); }))
+        .pipe(gulp.dest(BUILD + STYLES))
+        .pipe(browserSync.reload({stream: true}));
+    }));
 });
 
 gulp.task('js', function() {
-  return gulp.src([
-      SOURCE + JS + '*.js'
-    ])
+  var FILES = [ SOURCE + JS + '*.js' ];
+  gulp.src(FILES)
     .pipe(uglify()
-      .on('error', function (error) {
-        console.warn(error.message);
-      })
-    )
+          .on('error', function (error) { console.warn(error.message); }))
     .pipe(gulp.dest(BUILD + JS))
     .pipe(browserSync.reload({stream: true, once: true}));
 });
 
 gulp.task('jade', function() {
-  watch({glob: SOURCE + '*.jade'}, function(files) {
-    return files.pipe(jade({
-          pretty: true
-        })
-        .on('error', function (error) {
-          console.warn(error.message);
-        })
-      )
-      .pipe(gulp.dest(BUILD))
-      .pipe(browserSync.reload({stream: true, once: true}));
-  });
+  var FILES = SOURCE + '*.jade';
+  gulp.src(FILES)
+    .pipe(jade({ pretty: true })
+          .on('error', function (error) { console.warn(error.message); }))
+    .pipe(gulp.dest(BUILD) )
+    .pipe(browserSync.reload({stream: true, once: true}) );
 });
 
 gulp.task('images', function() {
-  watch({glob: SOURCE + IMAGES + '*.*'}, function(files) {
-    return files.pipe(
-        gulp.dest(BUILD + IMAGES)
-      );
-  });
+  var FILES = SOURCE + IMAGES + '*.*';
+  gulp.src(FILES)
+    .pipe(watch(FILES, function(files) {
+      return files.pipe( gulp.dest(BUILD + IMAGES) );
+    }));
 });
 
-gulp.task('fonts', function() {   
-  watch({glob: SOURCE + FONTS + '*.*'}, function(files) {
-    return files.pipe(
-        gulp.dest(BUILD + FONTS)
-      );
-  });
+gulp.task('fonts', function() {
+  var FILES = SOURCE + FONTS + '*.*';
+  gulp.src(FILES)
+    .pipe(watch(FILES, function(files) {
+      return files.pipe( gulp.dest(BUILD + FONTS));
+    }));
 });
 
 gulp.task('vendor', function() {
-  return gulp.src([
-      'bower_components/modernizr/modernizr.js',
-      'bower_components/respond/src/respond.js'
-    ])
-    .pipe(concat('vendor.js'))
-    .pipe(uglify())
-    .pipe( gulp.dest(BUILD + JS));
+  var FILES = [
+    'bower_components/modernizr/modernizr.js',
+    'bower_components/respond/src/respond.js' ];
+  gulp.src(FILES)
+      .pipe(concat('vendor.js'))
+      .pipe(uglify())
+      .pipe(gulp.dest(BUILD + JS));
 });
 
 gulp.task('clean', function(cb){
-  return del([BUILD], cb);
+  del([BUILD], cb);
 });
 
 gulp.task('public', function() {
-  watch({glob: PUBLIC + '**/*.*'}, function(files) {
-    return files.pipe(
-      gulp.dest(BUILD)
-     );
-  });
+  var FILES = PUBLIC + '**/*.*';
+  gulp.src(FILES)
+    .pipe(watch(FILES, function(files) {
+      return files.pipe( gulp.dest(BUILD));
+    }));
 });
 
 gulp.task('kss', function() {
-  return gulp.src([SOURCE + STYLES + '**/*.scss'])
-    .pipe(kss({
-      overview: 'README.md',
-      templateDirectory: SOURCE + 'styleguide-template/'
-    }))
-    .pipe(gulp.dest(BUILD + 'styleguide/'));
+  gulp.src([SOURCE + STYLES + '**/*.scss'])
+      .pipe(kss({
+        overview: 'README.md',
+        templateDirectory: SOURCE + 'styleguide-template/'
+      }))
+      .pipe(gulp.dest(BUILD + 'styleguide/'));
 });
 
 // --- Bringing it all together in a build task ---
@@ -123,20 +112,9 @@ gulp.task('build', ['js', 'css', 'jade', 'images', 'fonts', 'vendor', 'public', 
 
 
 // --- Setting up browser sync - see https://github.com/shakyShane/browser-sync ---
-gulp.task('browser-sync', ['clean'], function() {  
+gulp.task('browser-sync', ['clean'], function() {
   gulp.start('build');
-
-  return browserSync({
-    server: {
-      baseDir: BUILD
-    },
-    ghostMode: {
-      clicks: true,
-      location: true,
-      forms: true,
-      scroll: true
-    }
-  });
+  browserSync({ server: { baseDir: BUILD } });
 });
 
 
@@ -164,7 +142,7 @@ gulp.task('default', ['clean'], function(){
 gulp.task('heroku', ['clean'], function() {
   gulp.start('build');
   var port = process.env.PORT || 3000;
-   
+
   server.listen(port, function() {
     console.log("Listening on " + port);
   });
