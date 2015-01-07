@@ -20,6 +20,7 @@ var SOURCE = 'source/',
     BUILD  = 'build/',
     PUBLIC = 'public/',
     ASSETS = 'assets/',
+    BOWER = 'bower_components/',
     STYLES = ASSETS + 'styles/',
     JS     = ASSETS + 'scripts/',
     IMAGES = ASSETS + 'images/',
@@ -47,6 +48,7 @@ gulp.task('js', function() {
   gulp.src(FILES)
     .pipe(uglify()
           .on('error', function (error) { console.warn(error.message); }))
+    .pipe(concat('main.js'))
     .pipe(gulp.dest(BUILD + JS))
     .pipe(browserSync.reload({stream: true, once: true}));
 });
@@ -78,8 +80,8 @@ gulp.task('fonts', function() {
 
 gulp.task('vendor', function() {
   var FILES = [
-    'bower_components/modernizr/modernizr.js',
-    'bower_components/respond/src/respond.js' ];
+    BOWER + 'modernizr/modernizr.js',
+    BOWER + 'respond/src/respond.js' ];
   gulp.src(FILES)
       .pipe(concat('vendor.js'))
       .pipe(uglify())
