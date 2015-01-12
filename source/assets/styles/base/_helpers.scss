@@ -50,11 +50,6 @@ $directions:        'left', 'right', 'both';
   }
 }
 
-  .clear#{$namespace} {
-    clear: both;
-  }
-}
-
 // Generate clear classes without suffix.
 @include clear-generate();
 
