@@ -40,6 +40,31 @@
   justify-content: center;
 }
 
+$directions:        'left', 'right', 'both';
+
+@mixin clear-generate($namespace: '') {
+  @each $direction in $directions {
+    .clear-#{$direction}#{$namespace} {
+      clear: #{$direction};
+    }
+  }
+}
+
+  .clear#{$namespace} {
+    clear: both;
+  }
+}
+
+// Generate clear classes without suffix.
+@include clear-generate();
+
+// Generate clear classes with all the breakpoint suffixes
+@each $breakpoint in $breakpoints {
+  @include media($breakpoint) {
+    @include clear-generate('--#{$breakpoint}');
+  }
+}
+
 // Spacing
 //
 // Spacers are used to positioning specific elements. Usually it can be modules
