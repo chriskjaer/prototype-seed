@@ -180,6 +180,14 @@ $directions:        'left', 'right', 'both';
   cursor: pointer;
 }
 
+// fixes opacity transition when container is overflow hidden with border radius
+%transitionfix {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0)
+}
+
 // Videos
 //
 // Use the `embed-container` class around embedded videos to get a responsive block.
